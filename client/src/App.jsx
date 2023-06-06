@@ -6,6 +6,7 @@ import Home from "./views/Home";
 import Contact from "./views/Contact";
 import Partners from "./views/Partners";
 import Sponsorship from "./views/Sponsorship";
+import Test from "./views/Test";
 
 import { BrowserRouter } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
@@ -39,6 +40,7 @@ function App() {
                 />
                 <Route path="/partnerships/partners" element={<Partners />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/test" element={<Test />} />
             </Routes>
 
             <Footer />
