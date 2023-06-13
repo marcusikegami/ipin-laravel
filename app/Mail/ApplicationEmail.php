@@ -22,8 +22,8 @@ class ApplicationEmail extends Mailable
      */
     public function __construct(array $data)
     {
-        $this->data = $data;
-        logger()->info(json_encode($data));
+        $this->data = json_encode($data);
+        logger()->info('datalog:' . $data);
     }
 
     /**

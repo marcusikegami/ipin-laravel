@@ -29,13 +29,14 @@ class EmailController extends Controller
         $rawdate = new \DateTime('now', $timezone);
         $date = $rawdate->format('m/d/Y h:i:s a');
 
-
         $to_name = env('MAIL_TO_NAME');
         $to_email = env('MAIL_TO_ADDRESS');
 
         $data['date'] = $date;
 
-        // logger()->info($data);
+        logger()->info('applicationemail.php', $data);
+        $dataType = gettype($data['orgname']);
+        logger()->info('dataType:' . $dataType);
 
         try {
             Mail::to($to_email, $to_name)->send(new ApplicationEmail($data));
@@ -43,7 +44,7 @@ class EmailController extends Controller
             logger()->error($e->getMessage());
             return response()->json([
                 'status' => 'error',
-                'message' => 'Email not sent'
+                'message' => 'Email not sent: ' . $e->getMessage()
             ], 500);
         }
     }

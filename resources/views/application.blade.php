@@ -30,7 +30,7 @@
     </p>
     <p>
         Provider/Attorney Name:
-        <span>{{ $data['providername']}}</span>
+        <span>{{ $data['providername'] }}</span>
     </p>
     <p>
         Contact Person:
