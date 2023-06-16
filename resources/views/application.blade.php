@@ -63,7 +63,7 @@
     </br>
     <p>
         Sponsorship Level:
-        <span>{{ $data['sponsorshp'] }}</span>
+        <span>{{ $data['sponsorship'] }}</span>
     </p>
     </br>
     </br>

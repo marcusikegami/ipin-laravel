@@ -16,66 +16,57 @@ class ApplicationEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
+    /**
+     * The data to be used in the message.
+     */
+    public array $data;
     /**
      * Create a new message instance.
      */
     public function __construct(array $data)
     {
-        $this->data = json_encode($data);
-        logger()->info('datalog:' . $data);
+        $this->data = $data;
     }
 
     /**
-     * Get the message envelope.
+     * Build the message.
      */
-    public function envelope(): Envelope
+    public function build(): self
     {
-        return new Envelope(
-            subject: 'New Application from ' . $this->data['orgname'],
-        );
+        return $this->to(env('MAIL_TO_ADDRESS'), env('MAIL_TO_NAME'))
+            ->cc(env('MAIL_CC_ADDRESS'), env('MAIL_CC_NAME'))
+            ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
+            ->subject('New Application from ' . $this->data['orgname'])
+            ->view('application-email')
+            ->attachData($this->getPdfContent(), $this->getAttachmentFileName());
     }
 
     /**
-     * Get the message content definition.
+     * Get the PDF content.
      */
-    public function content(): Content
+    private function getPdfContent(): string
     {
-        return new Content(
-            view: 'application-email',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        // Render the view and get the HTML content
-        $html = View::make('application', $this->data)->render();
-
         // Create a new instance of Dompdf
         $dompdf = new Dompdf();
 
         // Load the HTML content into Dompdf
-        $dompdf->loadHtml($html);
+        $dompdf->loadHtml(view('application')->with('data', $this->data));
 
         // (Optional) Set any configuration options for Dompdf
         $dompdf->setPaper('A4', 'portrait');
+
         // Render the PDF
         $dompdf->render();
 
         // Get the PDF content
-        $pdfContent = $dompdf->output();
-        $fileName = $this->data['orgname'] . '-application.pdf';
+        return $dompdf->output();
+    }
 
-        // Create an attachment with the PDF content
-        $attachment = Attachment::fromData(static function () use ($pdfContent) {
-            echo $pdfContent;
-        }, $fileName);
-
-        return [$attachment];
+    /**
+     * Get the attachment file name.
+     */
+    private function getAttachmentFileName(): string
+    {
+        return $this->data['orgname'] . '-application.pdf';
     }
 }

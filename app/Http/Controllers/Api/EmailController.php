@@ -25,7 +25,7 @@ class EmailController extends Controller
         // $data['url'] = $request->url;
         // $sponsorshp = $request->sponsorshp;
         // create variable $date which is the current date and time in the MST timezone
-        $timezone = new \DateTimeZone('MST');
+        $timezone = new \DateTimeZone('America/Denver');
         $rawdate = new \DateTime('now', $timezone);
         $date = $rawdate->format('m/d/Y h:i:s a');
 
@@ -35,8 +35,6 @@ class EmailController extends Controller
         $data['date'] = $date;
 
         logger()->info('applicationemail.php', $data);
-        $dataType = gettype($data['orgname']);
-        logger()->info('dataType:' . $dataType);
 
         try {
             Mail::to($to_email, $to_name)->send(new ApplicationEmail($data));
