@@ -16,12 +16,17 @@
             font-weight: bold;
             padding-bottom: 4rem;
         }
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
     </style>
 </head>
 
 <body class="">
     <div class="header">
-        <img src="https://ipin-np.org/public_html/logo.png" alt="IPIN Logo" />
+        <img src="https://ipin-np.org/logo.png" alt="IPIN Logo" />
         <h3>IPIN Sponsorship Application</h3>
     </div>
     <p>
