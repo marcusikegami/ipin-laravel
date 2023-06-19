@@ -18,6 +18,7 @@ function App() {
             <Header />
             {/* Body Rendered Here within the Routes Component. Header and Footer are rendered on all pages (Footer is not rendered at '/' *see Footer.js) */}
             <Routes>
+                <Route path="*" element={<Home />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/events" element={<Events />} />
                 <Route path="/about/" element={<About />} />
